@@ -1,40 +1,40 @@
-// Create a connection to http://localhost:9999/echo
+// 创建Socket 连接
 var sock = new SockJS('http://localhost:9999/echo');
 
-// Open the connection
+// 打开连接
 sock.onopen = function() {
   console.log('open');
 };
 
-// On connection close
+// 关闭连接
 sock.onclose = function() {
   console.log('close');
 };
 
-// On receive message from server
+// 监听从服务端接受消息
 sock.onmessage = function(e) {
-  // Get the content
+  // 获取消息内容
   var content = JSON.parse(e.data);
 
-  // Append the text to text area (using jQuery)
+  // 将消息写到HTML页面
   $('#chat-content').val(function(i, text){
     return text + 'User ' + content.username + ': ' + content.message + '\n';
   });
 
 };
 
-// Function for sending the message to server
+// 给服务器发消息
 function sendMessage(){
-  // Get the content from the textbox
+  // 获取消息
   var message = $('#message').val();
   var username = $('#username').val();
 
-  // The object to send
+  // 将消息包装成JSON
   var send = {
     message: message,
     username: username
   };
 
-  // Send it now
+  // 将JSON消息包装成字符串发送
   sock.send(JSON.stringify(send));
 }
